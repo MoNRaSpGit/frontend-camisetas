@@ -6,3 +6,7 @@ dist
 coverage
 *.tsbuildinfo
 .env
+
+# Carpetas de trabajo para subir imagenes reales antes de moverlas a public/
+ImgCamiseta
+assets-camisetas-reales

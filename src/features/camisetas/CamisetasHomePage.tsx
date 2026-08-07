@@ -7,6 +7,11 @@ function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
 }
 
+function resolveImageUrl(imageUrl: string) {
+  if (/^(data:|https?:)/.test(imageUrl)) return imageUrl;
+  return `${import.meta.env.BASE_URL}${imageUrl}`;
+}
+
 export function CamisetasHomePage() {
   const [products, setProducts] = useState<CamisetaProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,7 +102,7 @@ export function CamisetasHomePage() {
           {filteredProducts.map((product) => (
             <article key={product.id} className="pdh-card">
               <div className="pdh-card-image-wrap">
-                <img src={product.imageUrl} alt={product.name} className="pdh-card-image" />
+                <img src={resolveImageUrl(product.imageUrl)} alt={product.name} className="pdh-card-image" />
               </div>
 
               <div className="pdh-card-body">
