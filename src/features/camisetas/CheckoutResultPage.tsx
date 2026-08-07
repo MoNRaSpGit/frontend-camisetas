@@ -7,15 +7,22 @@ type CheckoutResultPageProps = {
 
 export function CheckoutResultPage({ title, message }: CheckoutResultPageProps) {
   return (
-    <main className="camisetas-shell">
-      <header className="camisetas-header">
-        <p className="camisetas-kicker">Camisetas</p>
-        <h1>{title}</h1>
+    <main className="pdh-shell pdh-shell--narrow">
+      <header className="pdh-header pdh-header--simple">
+        <div className="pdh-brand">
+          <div className="pdh-logo" aria-hidden="true">
+            PdH
+          </div>
+          <div>
+            <p className="pdh-kicker">Pieldehincha</p>
+            <h1>{title}</h1>
+          </div>
+        </div>
       </header>
 
-      <p className="camisetas-empty-state">{message}</p>
+      <p className="pdh-empty-state">{message}</p>
 
-      <Link to="/" className="camisetas-button camisetas-button--ghost camisetas-button--link">
+      <Link to="/" className="pdh-button pdh-button--ghost pdh-button--link">
         Volver al catalogo
       </Link>
     </main>

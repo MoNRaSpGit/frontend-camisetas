@@ -1,8 +1,8 @@
 import { API_BASE_URL } from "../../shared/config/api";
 import type { CamisetaProduct } from "./camisetas.types";
 
-type ProductResponse = {
-  item: CamisetaProduct;
+type ProductsResponse = {
+  items: CamisetaProduct[];
 };
 
 type CheckoutResponse = {
@@ -25,12 +25,16 @@ async function readJson<T>(response: Response): Promise<T> {
   return (await response.json()) as T;
 }
 
-export async function getProduct(): Promise<ProductResponse> {
-  const response = await fetch(`${API_BASE_URL}/camisetas/product`, { cache: "no-store" });
-  return readJson<ProductResponse>(response);
+export async function getProducts(): Promise<ProductsResponse> {
+  const response = await fetch(`${API_BASE_URL}/camisetas/products`, { cache: "no-store" });
+  return readJson<ProductsResponse>(response);
 }
 
-export async function createCheckoutPreference(): Promise<CheckoutResponse> {
-  const response = await fetch(`${API_BASE_URL}/camisetas/checkout`, { method: "POST" });
+export async function createCheckoutPreference(productId: string): Promise<CheckoutResponse> {
+  const response = await fetch(`${API_BASE_URL}/camisetas/checkout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ productId })
+  });
   return readJson<CheckoutResponse>(response);
 }
