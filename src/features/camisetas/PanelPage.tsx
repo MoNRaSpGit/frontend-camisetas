@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { getPanelSummary } from "./camisetas.api";
 import type { CamisetaPanelSummary } from "./camisetas.types";
+import { PdhNav } from "./PdhNav";
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -35,6 +35,7 @@ export function PanelPage() {
 
   return (
     <main className="pdh-shell">
+      <PdhNav />
       <header className="pdh-header">
         <div className="pdh-brand">
           <div className="pdh-logo" aria-hidden="true">
@@ -45,10 +46,6 @@ export function PanelPage() {
             <h1>Panel de control</h1>
           </div>
         </div>
-
-        <Link to="/" className="pdh-button pdh-button--ghost">
-          Volver al catalogo
-        </Link>
       </header>
 
       {isLoading ? <p className="pdh-empty-state">Cargando panel...</p> : null}

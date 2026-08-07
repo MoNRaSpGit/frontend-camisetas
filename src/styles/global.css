@@ -22,7 +22,8 @@ body {
 }
 
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -318,4 +319,93 @@ input {
 
 .pdh-table tbody tr:last-child td {
   border-bottom: none;
+}
+
+.pdh-nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pdh-nav-link {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #475569;
+  text-decoration: none;
+  background: #eef2ff;
+}
+
+.pdh-nav-link--active {
+  background: #0f172a;
+  color: #fff;
+}
+
+.pdh-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pdh-text-input {
+  width: 100%;
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: #fff;
+  color: #0f172a;
+}
+
+.pdh-textarea {
+  min-height: 70px;
+  resize: vertical;
+}
+
+.pdh-field-label {
+  display: grid;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pdh-form-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pdh-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.pdh-admin-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: #fff;
+  overflow: hidden;
+  display: grid;
+}
+
+.pdh-admin-card-body {
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
+.pdh-admin-card-body .pdh-button {
+  width: 100%;
+}
+
+.pdh-file-button {
+  cursor: pointer;
+  text-align: center;
 }

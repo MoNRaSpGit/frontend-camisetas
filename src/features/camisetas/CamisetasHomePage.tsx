@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { createCheckoutPreference, getProducts } from "./camisetas.api";
 import type { CamisetaProduct } from "./camisetas.types";
+import { PdhNav } from "./PdhNav";
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -57,6 +58,7 @@ export function CamisetasHomePage() {
 
   return (
     <main className="pdh-shell">
+      <PdhNav />
       <header className="pdh-header">
         <div className="pdh-brand">
           <div className="pdh-logo" aria-hidden="true">
