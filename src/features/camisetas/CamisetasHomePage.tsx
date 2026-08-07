@@ -2,7 +2,33 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { createCheckoutPreference, getProducts } from "./camisetas.api";
 import type { CamisetaProduct } from "./camisetas.types";
-import { PdhNav } from "./PdhNav";
+import { PdhHeader } from "./PdhHeader";
+import { PdhFooter } from "./PdhFooter";
+import { PdhCarousel, type CarouselSlide } from "./PdhCarousel";
+
+const HERO_SLIDES: CarouselSlide[] = [
+  {
+    id: "nuevas",
+    eyebrow: "Recién llegadas",
+    title: "Camisetas nuevas cada semana",
+    text: "Sumamos modelos todo el tiempo. Volvé seguido para no perderte nada.",
+    gradient: "linear-gradient(135deg, #1e1b4b 0%, #4338ca 55%, #6d28d9 100%)"
+  },
+  {
+    id: "ofertas",
+    eyebrow: "Tiempo limitado",
+    title: "Hasta 50% OFF en modelos seleccionados",
+    text: "Mirá la pestaña Ofertas antes de que se acaben.",
+    gradient: "linear-gradient(135deg, #7c2d12 0%, #c2410c 55%, #ea580c 100%)"
+  },
+  {
+    id: "envios",
+    eyebrow: "Envíos a todo el país",
+    title: "Recibí tu camiseta donde estés",
+    text: "Coordinamos la entrega apenas se acredita el pago.",
+    gradient: "linear-gradient(135deg, #0f172a 0%, #0e7490 55%, #06b6d4 100%)"
+  }
+];
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -57,19 +83,12 @@ export function CamisetasHomePage() {
   }, [products, searchTerm]);
 
   return (
-    <main className="pdh-shell">
-      <PdhNav />
-      <header className="pdh-header">
-        <div className="pdh-brand">
-          <div className="pdh-logo" aria-hidden="true">
-            PdH
-          </div>
-          <div>
-            <p className="pdh-kicker">Pieldehincha</p>
-            <h1>Camisetas para hinchas de verdad</h1>
-          </div>
-        </div>
+    <div className="pdh-page">
+      <PdhHeader />
 
+      <PdhCarousel slides={HERO_SLIDES} />
+
+      <main className="pdh-shell">
         <div className="pdh-search">
           <span className="pdh-search-icon" aria-hidden="true">
             🔍
@@ -82,49 +101,65 @@ export function CamisetasHomePage() {
             aria-label="Buscar camiseta"
           />
         </div>
-      </header>
 
-      {isLoading ? <p className="pdh-empty-state">Cargando catalogo...</p> : null}
+        {isLoading ? <p className="pdh-empty-state">Cargando catalogo...</p> : null}
 
-      {loadError ? (
-        <div className="pdh-panel">
-          <p className="pdh-empty-state">No se pudo cargar el catalogo: {loadError}</p>
-          <button type="button" className="pdh-button pdh-button--ghost" onClick={() => void loadProducts()}>
-            Reintentar
-          </button>
-        </div>
-      ) : null}
+        {loadError ? (
+          <div className="pdh-panel">
+            <p className="pdh-empty-state">No se pudo cargar el catalogo: {loadError}</p>
+            <button type="button" className="pdh-button pdh-button--ghost" onClick={() => void loadProducts()}>
+              Reintentar
+            </button>
+          </div>
+        ) : null}
 
-      {!isLoading && !loadError && filteredProducts.length === 0 ? (
-        <p className="pdh-empty-state">No encontramos camisetas que coincidan con "{searchTerm}".</p>
-      ) : null}
+        {!isLoading && !loadError && filteredProducts.length === 0 ? (
+          <p className="pdh-empty-state">No encontramos camisetas que coincidan con "{searchTerm}".</p>
+        ) : null}
 
-      {!isLoading && !loadError && filteredProducts.length > 0 ? (
-        <div className="pdh-grid">
-          {filteredProducts.map((product) => (
-            <article key={product.id} className="pdh-card">
-              <div className="pdh-card-image-wrap">
-                <img src={resolveImageUrl(product.imageUrl)} alt={product.name} className="pdh-card-image" />
-              </div>
+        {!isLoading && !loadError && filteredProducts.length > 0 ? (
+          <div className="pdh-grid">
+            {filteredProducts.map((product) => (
+              <article key={product.id} className="pdh-card">
+                <div className="pdh-card-image-wrap">
+                  {product.salePrice !== null ? (
+                    <span className="pdh-sale-badge">
+                      -{Math.round(100 - (product.salePrice / product.price) * 100)}%
+                    </span>
+                  ) : null}
+                  <img src={resolveImageUrl(product.imageUrl)} alt={product.name} className="pdh-card-image" />
+                </div>
 
-              <div className="pdh-card-body">
-                <h2>{product.name}</h2>
-                <p className="pdh-card-description">{product.description}</p>
-                <strong className="pdh-card-price">{formatPrice(product.price, product.currency)}</strong>
+                <div className="pdh-card-body">
+                  <h2>{product.name}</h2>
+                  <p className="pdh-card-description">{product.description}</p>
+                  {product.salePrice !== null ? (
+                    <div className="pdh-price-row">
+                      <span className="pdh-price-old">{formatPrice(product.price, product.currency)}</span>
+                      <strong className="pdh-card-price pdh-card-price--sale">
+                        {formatPrice(product.salePrice, product.currency)}
+                      </strong>
+                    </div>
+                  ) : (
+                    <strong className="pdh-card-price">{formatPrice(product.price, product.currency)}</strong>
+                  )}
 
-                <button
-                  type="button"
-                  className="pdh-button pdh-button--primary"
-                  onClick={() => void handleBuy(product.id)}
-                  disabled={redirectingId === product.id}
-                >
-                  {redirectingId === product.id ? "Redirigiendo..." : "Comprar"}
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : null}
-    </main>
+                  <button
+                    type="button"
+                    className="pdh-button pdh-button--primary"
+                    onClick={() => void handleBuy(product.id)}
+                    disabled={redirectingId === product.id}
+                  >
+                    {redirectingId === product.id ? "Redirigiendo..." : "Comprar"}
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : null}
+      </main>
+
+      <PdhFooter />
+    </div>
   );
 }

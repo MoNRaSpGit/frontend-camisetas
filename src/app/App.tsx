@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { CamisetasHomePage } from "../features/camisetas/CamisetasHomePage";
 import { CheckoutResultPage } from "../features/camisetas/CheckoutResultPage";
+import { OfertasPage } from "../features/camisetas/OfertasPage";
 import { PanelPage } from "../features/camisetas/PanelPage";
 import { ProductosPage } from "../features/camisetas/ProductosPage";
 
@@ -28,6 +29,7 @@ export function App() {
         path="/compra-fallida"
         element={<CheckoutResultPage title="Pago no completado" message="No se pudo procesar el pago. Podes intentar de nuevo cuando quieras." />}
       />
+      <Route path="/ofertas" element={<OfertasPage />} />
       <Route path="/panel" element={<PanelPage />} />
       <Route path="/productos" element={<ProductosPage />} />
       <Route path="/health" element={<HealthPage />} />

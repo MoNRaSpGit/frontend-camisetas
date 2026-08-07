@@ -3,7 +3,8 @@ import { toast } from "react-toastify";
 import { checkAdminKey, getProducts, updateProduct, uploadProductImage } from "./camisetas.api";
 import { compressImageFile, ImageTooHeavyError } from "./image-compress";
 import type { CamisetaProduct } from "./camisetas.types";
-import { PdhNav } from "./PdhNav";
+import { PdhHeader } from "./PdhHeader";
+import { PdhFooter } from "./PdhFooter";
 
 const ADMIN_KEY_STORAGE = "camisetas-admin-key";
 
@@ -20,7 +21,17 @@ type EditableFields = {
   name: string;
   description: string;
   price: string;
+  salePrice: string;
 };
+
+function draftFromProduct(product: CamisetaProduct): EditableFields {
+  return {
+    name: product.name,
+    description: product.description,
+    price: String(product.price),
+    salePrice: product.salePrice !== null ? String(product.salePrice) : ""
+  };
+}
 
 export function ProductosPage() {
   const [adminKey, setAdminKey] = useState<string | null>(() => sessionStorage.getItem(ADMIN_KEY_STORAGE));
@@ -45,14 +56,7 @@ export function ProductosPage() {
     try {
       const result = await getProducts();
       setProducts(result.items);
-      setDrafts(
-        Object.fromEntries(
-          result.items.map((product) => [
-            product.id,
-            { name: product.name, description: product.description, price: String(product.price) }
-          ])
-        )
-      );
+      setDrafts(Object.fromEntries(result.items.map((product) => [product.id, draftFromProduct(product)])));
     } catch (error) {
       setLoadError(error instanceof Error ? error.message : "No se pudo cargar el catalogo.");
     } finally {
@@ -98,14 +102,29 @@ export function ProductosPage() {
       return;
     }
 
+    let salePrice: number | null = null;
+    if (draft.salePrice.trim() !== "") {
+      salePrice = Number(draft.salePrice);
+      if (!Number.isFinite(salePrice) || salePrice <= 0) {
+        toast.error("El precio de oferta no es válido.");
+        return;
+      }
+      if (salePrice >= price) {
+        toast.error("El precio de oferta debe ser menor al precio normal.");
+        return;
+      }
+    }
+
     setSavingId(productId);
     try {
       const updated = await updateProduct(productId, adminKey, {
         name: draft.name.trim(),
         description: draft.description.trim(),
-        price
+        price,
+        salePrice
       });
       setProducts((prev) => prev.map((product) => (product.id === productId ? updated : product)));
+      setDrafts((prev) => ({ ...prev, [productId]: draftFromProduct(updated) }));
       toast.success("Producto actualizado.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "No se pudo guardar el producto.");
@@ -136,140 +155,156 @@ export function ProductosPage() {
 
   if (!adminKey) {
     return (
-      <main className="pdh-shell pdh-shell--narrow">
-        <PdhNav />
-        <header className="pdh-header pdh-header--simple">
-          <div className="pdh-brand">
-            <div className="pdh-logo" aria-hidden="true">
-              PdH
-            </div>
+      <div className="pdh-page">
+        <PdhHeader />
+
+        <main className="pdh-shell pdh-shell--narrow">
+          <header className="pdh-header pdh-header--simple">
             <div>
               <p className="pdh-kicker">Pieldehincha</p>
               <h1>Productos</h1>
             </div>
-          </div>
-        </header>
+          </header>
 
-        <form className="pdh-panel" onSubmit={handleLogin}>
-          <p className="pdh-empty-state">Ingresá la clave de administrador para editar el catálogo.</p>
-          <input
-            type="password"
-            className="pdh-text-input"
-            placeholder="Clave"
-            value={passwordInput}
-            onChange={(event) => setPasswordInput(event.target.value)}
-            autoFocus
-          />
-          {loginError ? <p className="pdh-form-error">{loginError}</p> : null}
-          <button type="submit" className="pdh-button pdh-button--primary" disabled={isCheckingLogin || !passwordInput}>
-            {isCheckingLogin ? "Verificando..." : "Entrar"}
-          </button>
-        </form>
-      </main>
+          <form className="pdh-panel" onSubmit={handleLogin}>
+            <p className="pdh-empty-state">Ingresá la clave de administrador para editar el catálogo.</p>
+            <input
+              type="password"
+              className="pdh-text-input"
+              placeholder="Clave"
+              value={passwordInput}
+              onChange={(event) => setPasswordInput(event.target.value)}
+              autoFocus
+            />
+            {loginError ? <p className="pdh-form-error">{loginError}</p> : null}
+            <button type="submit" className="pdh-button pdh-button--primary" disabled={isCheckingLogin || !passwordInput}>
+              {isCheckingLogin ? "Verificando..." : "Entrar"}
+            </button>
+          </form>
+        </main>
+
+        <PdhFooter />
+      </div>
     );
   }
 
   return (
-    <main className="pdh-shell">
-      <PdhNav />
-      <header className="pdh-header">
-        <div className="pdh-brand">
-          <div className="pdh-logo" aria-hidden="true">
-            PdH
-          </div>
+    <div className="pdh-page">
+      <PdhHeader />
+
+      <main className="pdh-shell">
+        <header className="pdh-header">
           <div>
             <p className="pdh-kicker">Pieldehincha</p>
             <h1>Productos</h1>
           </div>
-        </div>
 
-        <div className="pdh-header-actions">
-          <button type="button" className="pdh-button pdh-button--ghost" onClick={handleLogout}>
-            Salir
-          </button>
-        </div>
-      </header>
+          <div className="pdh-header-actions">
+            <button type="button" className="pdh-button pdh-button--ghost" onClick={handleLogout}>
+              Salir
+            </button>
+          </div>
+        </header>
 
-      {isLoading ? <p className="pdh-empty-state">Cargando productos...</p> : null}
+        {isLoading ? <p className="pdh-empty-state">Cargando productos...</p> : null}
 
-      {loadError ? (
-        <div className="pdh-panel">
-          <p className="pdh-empty-state">No se pudo cargar el catalogo: {loadError}</p>
-          <button type="button" className="pdh-button pdh-button--ghost" onClick={() => void loadProducts()}>
-            Reintentar
-          </button>
-        </div>
-      ) : null}
+        {loadError ? (
+          <div className="pdh-panel">
+            <p className="pdh-empty-state">No se pudo cargar el catalogo: {loadError}</p>
+            <button type="button" className="pdh-button pdh-button--ghost" onClick={() => void loadProducts()}>
+              Reintentar
+            </button>
+          </div>
+        ) : null}
 
-      {!isLoading && !loadError ? (
-        <div className="pdh-admin-grid">
-          {products.map((product) => {
-            const draft = drafts[product.id] ?? { name: product.name, description: product.description, price: String(product.price) };
-            return (
-              <article key={product.id} className="pdh-admin-card">
-                <div className="pdh-card-image-wrap">
-                  <img src={resolveImageUrl(product.imageUrl)} alt={product.name} className="pdh-card-image" />
-                </div>
+        {!isLoading && !loadError ? (
+          <div className="pdh-admin-grid">
+            {products.map((product) => {
+              const draft = drafts[product.id] ?? draftFromProduct(product);
+              return (
+                <article key={product.id} className="pdh-admin-card">
+                  <div className="pdh-card-image-wrap">
+                    <img src={resolveImageUrl(product.imageUrl)} alt={product.name} className="pdh-card-image" />
+                  </div>
 
-                <div className="pdh-admin-card-body">
-                  <label className="pdh-field-label">
-                    Nombre
-                    <input
-                      type="text"
-                      className="pdh-text-input"
-                      value={draft.name}
-                      onChange={(event) => updateDraft(product.id, "name", event.target.value)}
-                    />
-                  </label>
+                  <div className="pdh-admin-card-body">
+                    <label className="pdh-field-label">
+                      Nombre
+                      <input
+                        type="text"
+                        className="pdh-text-input"
+                        value={draft.name}
+                        onChange={(event) => updateDraft(product.id, "name", event.target.value)}
+                      />
+                    </label>
 
-                  <label className="pdh-field-label">
-                    Descripción
-                    <textarea
-                      className="pdh-text-input pdh-textarea"
-                      value={draft.description}
-                      onChange={(event) => updateDraft(product.id, "description", event.target.value)}
-                    />
-                  </label>
+                    <label className="pdh-field-label">
+                      Descripción
+                      <textarea
+                        className="pdh-text-input pdh-textarea"
+                        value={draft.description}
+                        onChange={(event) => updateDraft(product.id, "description", event.target.value)}
+                      />
+                    </label>
 
-                  <label className="pdh-field-label">
-                    Precio ({product.currency})
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      className="pdh-text-input"
-                      value={draft.price}
-                      onChange={(event) => updateDraft(product.id, "price", event.target.value)}
-                    />
-                  </label>
+                    <label className="pdh-field-label">
+                      Precio ({product.currency})
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        className="pdh-text-input"
+                        value={draft.price}
+                        onChange={(event) => updateDraft(product.id, "price", event.target.value)}
+                      />
+                    </label>
 
-                  <p className="pdh-empty-state">Precio actual: {formatPrice(product.price, product.currency)}</p>
+                    <label className="pdh-field-label">
+                      Precio de oferta (opcional)
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Sin oferta"
+                        className="pdh-text-input"
+                        value={draft.salePrice}
+                        onChange={(event) => updateDraft(product.id, "salePrice", event.target.value)}
+                      />
+                    </label>
 
-                  <button
-                    type="button"
-                    className="pdh-button pdh-button--primary"
-                    onClick={() => void handleSave(product.id)}
-                    disabled={savingId === product.id}
-                  >
-                    {savingId === product.id ? "Guardando..." : "Guardar cambios"}
-                  </button>
+                    <p className="pdh-empty-state">
+                      Precio actual: {formatPrice(product.price, product.currency)}
+                      {product.salePrice !== null ? ` · Oferta: ${formatPrice(product.salePrice, product.currency)}` : ""}
+                    </p>
 
-                  <label className="pdh-button pdh-button--ghost pdh-file-button">
-                    {uploadingId === product.id ? "Subiendo..." : "Cambiar imagen"}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      hidden
-                      disabled={uploadingId === product.id}
-                      onChange={(event) => void handleImageChange(product.id, event.target.files?.[0])}
-                    />
-                  </label>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      ) : null}
-    </main>
+                    <button
+                      type="button"
+                      className="pdh-button pdh-button--primary"
+                      onClick={() => void handleSave(product.id)}
+                      disabled={savingId === product.id}
+                    >
+                      {savingId === product.id ? "Guardando..." : "Guardar cambios"}
+                    </button>
+
+                    <label className="pdh-button pdh-button--ghost pdh-file-button">
+                      {uploadingId === product.id ? "Subiendo..." : "Cambiar imagen"}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        disabled={uploadingId === product.id}
+                        onChange={(event) => void handleImageChange(product.id, event.target.files?.[0])}
+                      />
+                    </label>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : null}
+      </main>
+
+      <PdhFooter />
+    </div>
   );
 }

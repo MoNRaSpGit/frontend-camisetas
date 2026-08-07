@@ -56,7 +56,7 @@ export async function checkAdminKey(adminKey: string): Promise<boolean> {
 export async function updateProduct(
   productId: string,
   adminKey: string,
-  dto: { name?: string; description?: string; price?: number }
+  dto: { name?: string; description?: string; price?: number; salePrice?: number | null }
 ): Promise<CamisetaProduct> {
   const response = await fetch(`${API_BASE_URL}/camisetas/products/${productId}`, {
     method: "PATCH",

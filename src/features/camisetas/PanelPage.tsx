@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getPanelSummary } from "./camisetas.api";
 import type { CamisetaPanelSummary } from "./camisetas.types";
-import { PdhNav } from "./PdhNav";
+import { PdhHeader } from "./PdhHeader";
+import { PdhFooter } from "./PdhFooter";
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -34,21 +35,18 @@ export function PanelPage() {
   }
 
   return (
-    <main className="pdh-shell">
-      <PdhNav />
-      <header className="pdh-header">
-        <div className="pdh-brand">
-          <div className="pdh-logo" aria-hidden="true">
-            PdH
-          </div>
+    <div className="pdh-page">
+      <PdhHeader />
+
+      <main className="pdh-shell">
+        <header className="pdh-header">
           <div>
             <p className="pdh-kicker">Pieldehincha</p>
             <h1>Panel de control</h1>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {isLoading ? <p className="pdh-empty-state">Cargando panel...</p> : null}
+        {isLoading ? <p className="pdh-empty-state">Cargando panel...</p> : null}
 
       {loadError ? (
         <div className="pdh-panel">
@@ -135,6 +133,9 @@ export function PanelPage() {
           </section>
         </>
       ) : null}
-    </main>
+      </main>
+
+      <PdhFooter />
+    </div>
   );
 }

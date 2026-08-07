@@ -2,6 +2,10 @@
   font-family: Inter, "Segoe UI", sans-serif;
   color: #0f172a;
   background: #f8fafc;
+  --pdh-ink: #0b0f19;
+  --pdh-accent: #6366f1;
+  --pdh-accent-dark: #4338ca;
+  --pdh-sale: #f97316;
 }
 
 * {
@@ -18,7 +22,7 @@ body,
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 320px);
+  background: #f8fafc;
 }
 
 button,
@@ -27,8 +31,207 @@ textarea {
   font: inherit;
 }
 
-.pdh-shell {
+.pdh-page {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Header ---------- */
+
+.pdh-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--pdh-ink);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pdh-topbar-inner {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pdh-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.pdh-wordmark-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--pdh-accent), var(--pdh-accent-dark));
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px -8px rgba(99, 102, 241, 0.7);
+}
+
+.pdh-wordmark-badge--footer {
+  width: 46px;
+  height: 46px;
+}
+
+.pdh-wordmark-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.pdh-wordmark-text small {
+  font-weight: 600;
+  font-size: 11px;
+  color: #94a3b8;
+  letter-spacing: 0.02em;
+}
+
+.pdh-topnav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.pdh-topnav-link {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pdh-topnav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.pdh-topnav-link--active {
+  background: var(--pdh-accent);
+  color: #fff;
+}
+
+/* ---------- Carousel ---------- */
+
+.pdh-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.pdh-carousel-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.pdh-carousel-slide {
+  flex: 0 0 100%;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px min(8vw, 80px);
+  color: #fff;
+}
+
+.pdh-carousel-eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.pdh-carousel-slide h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
+  max-width: 640px;
+}
+
+.pdh-carousel-text {
+  margin: 0;
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14.5px;
+}
+
+.pdh-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 23, 42, 0.35);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.pdh-carousel-arrow:hover {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.pdh-carousel-arrow--prev {
+  left: 14px;
+}
+
+.pdh-carousel-arrow--next {
+  right: 14px;
+}
+
+.pdh-carousel-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pdh-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0;
+}
+
+.pdh-carousel-dot--active {
+  background: #fff;
+  width: 22px;
+}
+
+/* ---------- Shell / layout ---------- */
+
+.pdh-shell {
+  flex: 1;
   width: min(1200px, 100%);
   margin: 0 auto;
   padding: 28px 20px 56px;
@@ -54,40 +257,38 @@ textarea {
   justify-content: flex-start;
 }
 
-.pdh-brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.pdh-logo {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #1d4ed8, #0f172a);
-  color: #fff;
-  font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 0.02em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 8px 20px -8px rgba(15, 23, 42, 0.5);
-}
-
 .pdh-kicker {
   margin: 0 0 2px;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #4338ca;
+  color: var(--pdh-accent-dark);
 }
 
 .pdh-header h1 {
   margin: 0;
   font-size: clamp(1.3rem, 3.4vw, 1.9rem);
+}
+
+.pdh-ofertas-hero {
+  display: grid;
+  gap: 6px;
+}
+
+.pdh-ofertas-hero h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+.pdh-ofertas-hero .pdh-carousel-eyebrow {
+  color: var(--pdh-sale);
+}
+
+.pdh-ofertas-hero-text {
+  margin: 0;
+  color: #64748b;
+  font-size: 14.5px;
 }
 
 .pdh-search {
@@ -131,6 +332,8 @@ textarea {
   justify-items: start;
 }
 
+/* ---------- Product grid / cards ---------- */
+
 .pdh-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -151,20 +354,25 @@ textarea {
 
 .pdh-card {
   border: 1px solid #e2e8f0;
-  border-radius: 18px;
+  border-radius: 20px;
   background: #fff;
   overflow: hidden;
   display: grid;
   gap: 0;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .pdh-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 28px -16px rgba(15, 23, 42, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px -18px rgba(15, 23, 42, 0.4);
+}
+
+.pdh-card--sale {
+  border-color: rgba(249, 115, 22, 0.35);
 }
 
 .pdh-card-image-wrap {
+  position: relative;
   background: linear-gradient(160deg, #e0e7ff, #f1f5f9);
   padding: 18px;
 }
@@ -174,6 +382,19 @@ textarea {
   aspect-ratio: 1 / 1;
   object-fit: contain;
   display: block;
+}
+
+.pdh-sale-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--pdh-sale);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 6px 14px -6px rgba(249, 115, 22, 0.7);
 }
 
 .pdh-card-body {
@@ -203,6 +424,24 @@ textarea {
   color: #0f172a;
 }
 
+.pdh-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pdh-price-old {
+  font-size: 13px;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.pdh-card-price--sale {
+  color: var(--pdh-sale);
+}
+
+/* ---------- Buttons ---------- */
+
 .pdh-button {
   min-height: 44px;
   padding: 0 20px;
@@ -215,6 +454,7 @@ textarea {
   align-items: center;
   justify-content: center;
   font-size: 13.5px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .pdh-card-body .pdh-button {
@@ -223,8 +463,13 @@ textarea {
 }
 
 .pdh-button--primary {
-  background: #0f172a;
+  background: var(--pdh-ink);
   color: #fff;
+}
+
+.pdh-button--primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px -10px rgba(15, 23, 42, 0.6);
 }
 
 .pdh-button--primary:disabled {
@@ -241,6 +486,8 @@ textarea {
 .pdh-button--link {
   width: fit-content;
 }
+
+/* ---------- Panel de control ---------- */
 
 .pdh-stats-grid {
   display: grid;
@@ -321,26 +568,7 @@ textarea {
   border-bottom: none;
 }
 
-.pdh-nav {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.pdh-nav-link {
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #475569;
-  text-decoration: none;
-  background: #eef2ff;
-}
-
-.pdh-nav-link--active {
-  background: #0f172a;
-  color: #fff;
-}
+/* ---------- Admin (Productos) ---------- */
 
 .pdh-header-actions {
   display: flex;
@@ -408,4 +636,88 @@ textarea {
 .pdh-file-button {
   cursor: pointer;
   text-align: center;
+}
+
+/* ---------- Footer ---------- */
+
+.pdh-footer {
+  background: var(--pdh-ink);
+  color: #cbd5e1;
+  margin-top: 40px;
+}
+
+.pdh-footer-inner {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 40px 20px 24px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 28px;
+}
+
+@media (max-width: 720px) {
+  .pdh-footer-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pdh-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdh-footer-title {
+  margin: 0;
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.pdh-footer-tagline {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+.pdh-footer-heading {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+}
+
+.pdh-footer-col {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.pdh-footer-text {
+  margin: 0;
+  font-size: 13.5px;
+}
+
+.pdh-footer-text--muted {
+  color: #64748b;
+}
+
+.pdh-footer-link {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 13.5px;
+}
+
+.pdh-footer-link:hover {
+  color: #fff;
+}
+
+.pdh-footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #64748b;
 }
