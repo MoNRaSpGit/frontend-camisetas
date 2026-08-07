@@ -30,11 +30,16 @@ export async function getProducts(): Promise<ProductsResponse> {
   return readJson<ProductsResponse>(response);
 }
 
-export async function createCheckoutPreference(productId: string): Promise<CheckoutResponse> {
+export type CheckoutCartItem = {
+  productId: string;
+  quantity: number;
+};
+
+export async function createCheckoutPreference(items: CheckoutCartItem[]): Promise<CheckoutResponse> {
   const response = await fetch(`${API_BASE_URL}/camisetas/checkout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ productId })
+    body: JSON.stringify({ items })
   });
   return readJson<CheckoutResponse>(response);
 }

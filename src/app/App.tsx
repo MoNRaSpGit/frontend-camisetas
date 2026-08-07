@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { CamisetasHomePage } from "../features/camisetas/CamisetasHomePage";
+import { CartPage } from "../features/camisetas/CartPage";
 import { CheckoutResultPage } from "../features/camisetas/CheckoutResultPage";
 import { OfertasPage } from "../features/camisetas/OfertasPage";
 import { PanelPage } from "../features/camisetas/PanelPage";
@@ -19,7 +20,13 @@ export function App() {
       <Route path="/" element={<CamisetasHomePage />} />
       <Route
         path="/compra-exitosa"
-        element={<CheckoutResultPage title="Pago aprobado" message="Gracias por tu compra! Te vamos a contactar para coordinar la entrega." />}
+        element={
+          <CheckoutResultPage
+            title="Pago aprobado"
+            message="Gracias por tu compra! Te vamos a contactar para coordinar la entrega."
+            clearsCart
+          />
+        }
       />
       <Route
         path="/compra-pendiente"
@@ -29,6 +36,7 @@ export function App() {
         path="/compra-fallida"
         element={<CheckoutResultPage title="Pago no completado" message="No se pudo procesar el pago. Podes intentar de nuevo cuando quieras." />}
       />
+      <Route path="/carrito" element={<CartPage />} />
       <Route path="/ofertas" element={<OfertasPage />} />
       <Route path="/panel" element={<PanelPage />} />
       <Route path="/productos" element={<ProductosPage />} />

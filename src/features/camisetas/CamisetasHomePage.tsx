@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { createCheckoutPreference, getProducts } from "./camisetas.api";
+import { useCart } from "./CartContext";
+import { getProducts } from "./camisetas.api";
 import type { CamisetaProduct } from "./camisetas.types";
 import { PdhHeader } from "./PdhHeader";
 import { PdhFooter } from "./PdhFooter";
@@ -40,10 +41,10 @@ function resolveImageUrl(imageUrl: string) {
 }
 
 export function CamisetasHomePage() {
+  const { addItem } = useCart();
   const [products, setProducts] = useState<CamisetaProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
-  const [redirectingId, setRedirectingId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -63,15 +64,9 @@ export function CamisetasHomePage() {
     }
   }
 
-  async function handleBuy(productId: string) {
-    setRedirectingId(productId);
-    try {
-      const { initPoint } = await createCheckoutPreference(productId);
-      window.location.href = initPoint;
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "No se pudo iniciar el pago.");
-      setRedirectingId(null);
-    }
+  function handleAddToCart(product: CamisetaProduct) {
+    addItem(product);
+    toast.success(`${product.name} agregada al carrito.`);
   }
 
   const filteredProducts = useMemo(() => {
@@ -147,10 +142,9 @@ export function CamisetasHomePage() {
                   <button
                     type="button"
                     className="pdh-button pdh-button--primary"
-                    onClick={() => void handleBuy(product.id)}
-                    disabled={redirectingId === product.id}
+                    onClick={() => handleAddToCart(product)}
                   >
-                    {redirectingId === product.id ? "Redirigiendo..." : "Comprar"}
+                    Agregar al carrito
                   </button>
                 </div>
               </article>

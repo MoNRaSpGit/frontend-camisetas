@@ -1,13 +1,23 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "./CartContext";
 import { PdhHeader } from "./PdhHeader";
 import { PdhFooter } from "./PdhFooter";
 
 type CheckoutResultPageProps = {
   title: string;
   message: string;
+  clearsCart?: boolean;
 };
 
-export function CheckoutResultPage({ title, message }: CheckoutResultPageProps) {
+export function CheckoutResultPage({ title, message, clearsCart }: CheckoutResultPageProps) {
+  const { clear } = useCart();
+
+  useEffect(() => {
+    if (clearsCart) clear();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clearsCart]);
+
   return (
     <div className="pdh-page">
       <PdhHeader />
