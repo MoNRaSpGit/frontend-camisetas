@@ -6,6 +6,19 @@ import { PdhFooter } from "./PdhFooter";
 import { SalesChart, type ChartPoint } from "./SalesChart";
 
 const MOVEMENTS_PREVIEW_COUNT = 3;
+
+// Datos ficticios para mostrar como quedaria el grafico mientras no hay
+// suficiente historial real todavia (boceto para el cliente). Cuando haya
+// mas ventas reales en distintos dias, esto se reemplaza por buildChartData.
+const DEMO_CHART_DATA: ChartPoint[] = [
+  { label: "Lun", value: 3200 },
+  { label: "Mar", value: 5100 },
+  { label: "Mié", value: 2800 },
+  { label: "Jue", value: 6400 },
+  { label: "Vie", value: 8900 },
+  { label: "Sáb", value: 11200 },
+  { label: "Dom", value: 7600 }
+];
 const MEDALS = ["🥇", "🥈", "🥉"];
 const MEDAL_CLASSES = ["pdh-qty-badge--gold", "pdh-qty-badge--silver", "pdh-qty-badge--bronze"];
 
@@ -22,30 +35,6 @@ function formatPrice(amount: number, currency: string) {
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleString("es-UY", { dateStyle: "short", timeStyle: "short" });
-}
-
-// Si todas las ventas cayeron el mismo dia, agrupar por dia daria un solo
-// punto (grafico sin gracia). En ese caso se agrupa por hora en su lugar.
-function buildChartData(movimientos: CamisetaSaleMovement[]): ChartPoint[] {
-  const distinctDays = new Set(movimientos.map((m) => new Date(m.createdAt).toDateString()));
-  const groupByHour = distinctDays.size <= 1;
-
-  const totals = new Map<string, { value: number; sortKey: number }>();
-  for (const movement of movimientos) {
-    const date = new Date(movement.createdAt);
-    const key = groupByHour
-      ? date.toLocaleTimeString("es-UY", { hour: "2-digit", minute: "2-digit" })
-      : date.toLocaleDateString("es-UY", { day: "2-digit", month: "2-digit" });
-    const sortKey = groupByHour ? date.getHours() * 60 + date.getMinutes() : date.getTime();
-    const lineTotal = movement.unitPrice * movement.quantity;
-    const existing = totals.get(key);
-    totals.set(key, { value: (existing?.value || 0) + lineTotal, sortKey });
-  }
-
-  return Array.from(totals.entries())
-    .map(([label, { value, sortKey }]) => ({ label, value, sortKey }))
-    .sort((a, b) => a.sortKey - b.sortKey)
-    .map(({ label, value }) => ({ label, value }));
 }
 
 function groupIntoOrders(movimientos: CamisetaSaleMovement[]): Order[] {
@@ -95,12 +84,6 @@ export function PanelPage() {
   const orders = useMemo(() => (summary ? groupIntoOrders(summary.movimientos) : []), [summary]);
   const visibleOrders = showAllMovements ? orders : orders.slice(0, MOVEMENTS_PREVIEW_COUNT);
   const hasHiddenMovements = orders.length > MOVEMENTS_PREVIEW_COUNT;
-  const chartData = useMemo(() => (summary ? buildChartData(summary.movimientos) : []), [summary]);
-  const chartByHour = useMemo(() => {
-    if (!summary) return false;
-    const distinctDays = new Set(summary.movimientos.map((m) => new Date(m.createdAt).toDateString()));
-    return distinctDays.size <= 1;
-  }, [summary]);
 
   return (
     <div className="pdh-page">
@@ -150,15 +133,6 @@ export function PanelPage() {
                 </div>
               </div>
             </section>
-
-            {chartData.length >= 2 ? (
-              <section className="pdh-panel-section">
-                <h2>{chartByHour ? "Ventas por hora" : "Ventas por día"}</h2>
-                <div className="pdh-chart-card">
-                  <SalesChart data={chartData} currency={summary.currency} />
-                </div>
-              </section>
-            ) : null}
 
             <section className="pdh-panel-section">
               <div className="pdh-panel-heading-row">
@@ -231,6 +205,20 @@ export function PanelPage() {
                   ))}
                 </ul>
               )}
+            </section>
+
+            <section className="pdh-panel-section">
+              <div className="pdh-panel-heading-row">
+                <h2>Ventas por día</h2>
+                <span className="pdh-demo-badge">Boceto</span>
+              </div>
+              <div className="pdh-chart-card">
+                <SalesChart data={DEMO_CHART_DATA} currency={summary.currency} />
+              </div>
+              <p className="pdh-order-item-meta">
+                Datos de ejemplo para mostrar como va a quedar. Cuando tengas ventas reales de varios días, se
+                reemplaza solo.
+              </p>
             </section>
           </>
         ) : null}

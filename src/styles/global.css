@@ -660,6 +660,18 @@ textarea {
   background: #f8fafc;
 }
 
+.pdh-demo-badge {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 /* ---------- Movimientos (acordeon) / Mas vendidas (ranking) ---------- */
 
 .pdh-order-list {
