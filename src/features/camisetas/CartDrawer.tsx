@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { CartIcon } from "./icons";
 
-const AUTO_CLOSE_MS = 3000;
+const AUTO_CLOSE_MS = 2000;
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
