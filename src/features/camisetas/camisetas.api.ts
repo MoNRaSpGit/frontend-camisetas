@@ -49,32 +49,22 @@ export async function getPanelSummary(): Promise<CamisetaPanelSummary> {
   return readJson<CamisetaPanelSummary>(response);
 }
 
-const ADMIN_KEY_HEADER = "x-camisetas-admin-key";
-
-export async function checkAdminKey(adminKey: string): Promise<boolean> {
-  const response = await fetch(`${API_BASE_URL}/camisetas/admin/check`, {
-    headers: { [ADMIN_KEY_HEADER]: adminKey }
-  });
-  return response.ok;
-}
-
 export async function updateProduct(
   productId: string,
-  adminKey: string,
   dto: { name?: string; description?: string; price?: number; salePrice?: number | null }
 ): Promise<CamisetaProduct> {
   const response = await fetch(`${API_BASE_URL}/camisetas/products/${productId}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json", [ADMIN_KEY_HEADER]: adminKey },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dto)
   });
   return readJson<CamisetaProduct>(response);
 }
 
-export async function uploadProductImage(productId: string, adminKey: string, imageDataUri: string): Promise<void> {
+export async function uploadProductImage(productId: string, imageDataUri: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/camisetas/products/${productId}/image`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", [ADMIN_KEY_HEADER]: adminKey },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ image: imageDataUri })
   });
   await readJson<{ ok: boolean }>(response);

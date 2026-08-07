@@ -1,12 +1,10 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { checkAdminKey, getProducts, updateProduct, uploadProductImage } from "./camisetas.api";
+import { getProducts, updateProduct, uploadProductImage } from "./camisetas.api";
 import { compressImageFile, ImageTooHeavyError } from "./image-compress";
 import type { CamisetaProduct } from "./camisetas.types";
 import { PdhHeader } from "./PdhHeader";
 import { PdhFooter } from "./PdhFooter";
-
-const ADMIN_KEY_STORAGE = "camisetas-admin-key";
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -34,21 +32,16 @@ function draftFromProduct(product: CamisetaProduct): EditableFields {
 }
 
 export function ProductosPage() {
-  const [adminKey, setAdminKey] = useState<string | null>(() => sessionStorage.getItem(ADMIN_KEY_STORAGE));
-  const [passwordInput, setPasswordInput] = useState("");
-  const [loginError, setLoginError] = useState("");
-  const [isCheckingLogin, setIsCheckingLogin] = useState(false);
-
   const [products, setProducts] = useState<CamisetaProduct[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [drafts, setDrafts] = useState<Record<string, EditableFields>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (adminKey) void loadProducts();
-  }, [adminKey]);
+    void loadProducts();
+  }, []);
 
   async function loadProducts() {
     setIsLoading(true);
@@ -64,37 +57,11 @@ export function ProductosPage() {
     }
   }
 
-  async function handleLogin(event: FormEvent) {
-    event.preventDefault();
-    setIsCheckingLogin(true);
-    setLoginError("");
-    try {
-      const ok = await checkAdminKey(passwordInput);
-      if (!ok) {
-        setLoginError("Clave incorrecta.");
-        return;
-      }
-      sessionStorage.setItem(ADMIN_KEY_STORAGE, passwordInput);
-      setAdminKey(passwordInput);
-    } catch (error) {
-      setLoginError(error instanceof Error ? error.message : "No se pudo validar la clave.");
-    } finally {
-      setIsCheckingLogin(false);
-    }
-  }
-
-  function handleLogout() {
-    sessionStorage.removeItem(ADMIN_KEY_STORAGE);
-    setAdminKey(null);
-    setPasswordInput("");
-  }
-
   function updateDraft(productId: string, field: keyof EditableFields, value: string) {
     setDrafts((prev) => ({ ...prev, [productId]: { ...prev[productId], [field]: value } }));
   }
 
   async function handleSave(productId: string) {
-    if (!adminKey) return;
     const draft = drafts[productId];
     const price = Number(draft.price);
     if (!draft.name.trim() || !draft.description.trim() || !Number.isFinite(price) || price <= 0) {
@@ -117,7 +84,7 @@ export function ProductosPage() {
 
     setSavingId(productId);
     try {
-      const updated = await updateProduct(productId, adminKey, {
+      const updated = await updateProduct(productId, {
         name: draft.name.trim(),
         description: draft.description.trim(),
         price,
@@ -134,12 +101,12 @@ export function ProductosPage() {
   }
 
   async function handleImageChange(productId: string, file: File | undefined) {
-    if (!file || !adminKey) return;
+    if (!file) return;
 
     setUploadingId(productId);
     try {
       const compressed = await compressImageFile(file);
-      await uploadProductImage(productId, adminKey, compressed);
+      await uploadProductImage(productId, compressed);
       toast.success("Imagen actualizada.");
       await loadProducts();
     } catch (error) {
@@ -153,41 +120,6 @@ export function ProductosPage() {
     }
   }
 
-  if (!adminKey) {
-    return (
-      <div className="pdh-page">
-        <PdhHeader />
-
-        <main className="pdh-shell pdh-shell--narrow">
-          <header className="pdh-header pdh-header--simple">
-            <div>
-              <p className="pdh-kicker">Pieldehincha</p>
-              <h1>Productos</h1>
-            </div>
-          </header>
-
-          <form className="pdh-panel" onSubmit={handleLogin}>
-            <p className="pdh-empty-state">Ingresá la clave de administrador para editar el catálogo.</p>
-            <input
-              type="password"
-              className="pdh-text-input"
-              placeholder="Clave"
-              value={passwordInput}
-              onChange={(event) => setPasswordInput(event.target.value)}
-              autoFocus
-            />
-            {loginError ? <p className="pdh-form-error">{loginError}</p> : null}
-            <button type="submit" className="pdh-button pdh-button--primary" disabled={isCheckingLogin || !passwordInput}>
-              {isCheckingLogin ? "Verificando..." : "Entrar"}
-            </button>
-          </form>
-        </main>
-
-        <PdhFooter />
-      </div>
-    );
-  }
-
   return (
     <div className="pdh-page">
       <PdhHeader />
@@ -197,12 +129,6 @@ export function ProductosPage() {
           <div>
             <p className="pdh-kicker">Pieldehincha</p>
             <h1>Productos</h1>
-          </div>
-
-          <div className="pdh-header-actions">
-            <button type="button" className="pdh-button pdh-button--ghost" onClick={handleLogout}>
-              Salir
-            </button>
           </div>
         </header>
 
