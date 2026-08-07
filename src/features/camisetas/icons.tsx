@@ -36,6 +36,63 @@ export function RemoveIcon({ size = 18 }: IconProps) {
   );
 }
 
+export function CheckCircleIcon({ size = 18 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9.5" />
+      <path d="M7.5 12.5l3 3 6-6.5" />
+    </svg>
+  );
+}
+
+export function ClockIcon({ size = 18 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9.5" />
+      <path d="M12 7v5.5l3.5 2" />
+    </svg>
+  );
+}
+
+export function XCircleIcon({ size = 18 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9.5" />
+      <path d="M9 9l6 6M15 9l-6 6" />
+    </svg>
+  );
+}
+
 export function CartIcon({ size = 18 }: IconProps) {
   return (
     <svg

@@ -1053,6 +1053,79 @@ textarea {
   width: 100%;
 }
 
+/* ---------- Resultado de pago (exito/pendiente/fallido) ---------- */
+
+.pdh-result-card {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  background: #fff;
+  padding: 40px 32px;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.pdh-result-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.pdh-result-card--success {
+  border-top: 4px solid #16a34a;
+}
+
+.pdh-result-card--success .pdh-result-icon {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.pdh-result-card--pending {
+  border-top: 4px solid #f59e0b;
+}
+
+.pdh-result-card--pending .pdh-result-icon {
+  background: #fffbeb;
+  color: #f59e0b;
+}
+
+.pdh-result-card--failure {
+  border-top: 4px solid #dc2626;
+}
+
+.pdh-result-card--failure .pdh-result-icon {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.pdh-result-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.pdh-result-message {
+  margin: 0;
+  max-width: 380px;
+  color: #64748b;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.pdh-result-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
 /* ---------- Footer ---------- */
 
 .pdh-footer {
