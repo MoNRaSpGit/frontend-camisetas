@@ -779,19 +779,26 @@ textarea {
 
 .pdh-cart-item-end {
   display: grid;
-  gap: 6px;
+  gap: 8px;
   justify-items: end;
   text-align: right;
 }
 
 .pdh-cart-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
   border: none;
-  background: none;
-  color: #dc2626;
-  font-size: 12px;
-  font-weight: 700;
+  border-radius: 999px;
+  background: #fef2f2;
   cursor: pointer;
   padding: 0;
+}
+
+.pdh-cart-remove:hover {
+  background: #fee2e2;
 }
 
 .pdh-cart-total {
@@ -925,8 +932,17 @@ textarea {
   box-shadow: -18px 0 40px -20px rgba(15, 23, 42, 0.5);
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
-  padding: 20px;
   gap: 16px;
+}
+
+.pdh-drawer-list,
+.pdh-drawer-total,
+.pdh-drawer-actions {
+  margin: 0 20px;
+}
+
+.pdh-drawer-actions {
+  margin-bottom: 20px;
 }
 
 .pdh-drawer--open {
@@ -937,24 +953,52 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 18px 20px;
+  background: linear-gradient(180deg, #f0fdf4, #fff);
+  border-bottom: 1px solid #eef2f6;
+}
+
+.pdh-drawer-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdh-drawer-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .pdh-drawer-title {
   margin: 0;
   font-weight: 800;
-  font-size: 15px;
+  font-size: 14px;
   color: #15803d;
+}
+
+.pdh-drawer-subtitle {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #64748b;
 }
 
 .pdh-drawer-close {
   border: none;
   background: #f1f5f9;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
-  font-size: 18px;
+  font-size: 17px;
   cursor: pointer;
   color: #64748b;
+  flex-shrink: 0;
 }
 
 .pdh-drawer-list {
@@ -969,6 +1013,9 @@ textarea {
   grid-template-columns: 48px 1fr auto;
   gap: 10px;
   align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  background: #f8fafc;
 }
 
 .pdh-drawer-item-image {

@@ -5,6 +5,7 @@ import { useCart } from "./CartContext";
 import { createCheckoutPreference } from "./camisetas.api";
 import { PdhHeader } from "./PdhHeader";
 import { PdhFooter } from "./PdhFooter";
+import { RemoveIcon } from "./icons";
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -77,10 +78,15 @@ export function CartPage() {
                   </div>
 
                   <div className="pdh-cart-item-end">
-                    <strong>{formatPrice(item.unitPrice * item.quantity, item.currency)}</strong>
-                    <button type="button" className="pdh-cart-remove" onClick={() => removeItem(item.productId)}>
-                      Quitar
+                    <button
+                      type="button"
+                      className="pdh-cart-remove"
+                      onClick={() => removeItem(item.productId)}
+                      aria-label={`Quitar ${item.name}`}
+                    >
+                      <RemoveIcon size={16} />
                     </button>
+                    <strong>{formatPrice(item.unitPrice * item.quantity, item.currency)}</strong>
                   </div>
                 </article>
               ))}

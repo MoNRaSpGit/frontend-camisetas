@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
+import { CartIcon } from "./icons";
 
-const AUTO_CLOSE_MS = 5000;
+const AUTO_CLOSE_MS = 3000;
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -42,7 +43,17 @@ export function CartDrawer() {
 
       <aside className={`pdh-drawer${isDrawerOpen ? " pdh-drawer--open" : ""}`} aria-hidden={!isDrawerOpen}>
         <div className="pdh-drawer-header">
-          <p className="pdh-drawer-title">✓ Agregado al carrito</p>
+          <div className="pdh-drawer-header-info">
+            <span className="pdh-drawer-icon">
+              <CartIcon size={17} />
+            </span>
+            <div>
+              <p className="pdh-drawer-title">Agregado al carrito</p>
+              <p className="pdh-drawer-subtitle">
+                {items.length} {items.length === 1 ? "producto" : "productos"}
+              </p>
+            </div>
+          </div>
           <button type="button" className="pdh-drawer-close" onClick={closeDrawer} aria-label="Cerrar">
             ×
           </button>
