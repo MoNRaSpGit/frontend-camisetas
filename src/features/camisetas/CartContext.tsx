@@ -18,6 +18,9 @@ type CartContextValue = {
   removeItem: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => void;
   clear: () => void;
+  isDrawerOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
 };
 
 const CART_STORAGE_KEY = "camisetas-cart";
@@ -36,6 +39,7 @@ function loadInitialCart(): CartItem[] {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => loadInitialCart());
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
@@ -62,6 +66,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
       ];
     });
+    setIsDrawerOpen(true);
   }
 
   function removeItem(productId: string) {
@@ -83,7 +88,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalCount = useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items]);
   const totalPrice = useMemo(() => items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0), [items]);
 
-  const value: CartContextValue = { items, totalCount, totalPrice, addItem, removeItem, setQuantity, clear };
+  const value: CartContextValue = {
+    items,
+    totalCount,
+    totalPrice,
+    addItem,
+    removeItem,
+    setQuantity,
+    clear,
+    isDrawerOpen,
+    openDrawer: () => setIsDrawerOpen(true),
+    closeDrawer: () => setIsDrawerOpen(false)
+  };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

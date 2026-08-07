@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { toast } from "react-toastify";
 import { useCart } from "./CartContext";
+import { useSearch } from "./SearchContext";
 import { getProducts } from "./camisetas.api";
 import type { CamisetaProduct } from "./camisetas.types";
 import { PdhHeader } from "./PdhHeader";
@@ -42,10 +42,10 @@ function resolveImageUrl(imageUrl: string) {
 
 export function CamisetasHomePage() {
   const { addItem } = useCart();
+  const { searchTerm } = useSearch();
   const [products, setProducts] = useState<CamisetaProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     void loadProducts();
@@ -66,7 +66,6 @@ export function CamisetasHomePage() {
 
   function handleAddToCart(product: CamisetaProduct) {
     addItem(product);
-    toast.success(`${product.name} agregada al carrito.`);
   }
 
   const filteredProducts = useMemo(() => {
@@ -84,19 +83,6 @@ export function CamisetasHomePage() {
       <PdhCarousel slides={HERO_SLIDES} />
 
       <main className="pdh-shell">
-        <div className="pdh-search">
-          <span className="pdh-search-icon" aria-hidden="true">
-            🔍
-          </span>
-          <input
-            type="search"
-            placeholder="Buscar camiseta por nombre o color..."
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            aria-label="Buscar camiseta"
-          />
-        </div>
-
         {isLoading ? <p className="pdh-empty-state">Cargando catalogo...</p> : null}
 
         {loadError ? (

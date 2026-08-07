@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useCart } from "./CartContext";
+import { useSearch } from "./SearchContext";
 
 const NAV_LINKS = [
   { to: "/", label: "Catálogo", end: true },
@@ -10,6 +11,7 @@ const NAV_LINKS = [
 
 export function PdhHeader() {
   const { totalCount } = useCart();
+  const { searchTerm, setSearchTerm } = useSearch();
 
   return (
     <header className="pdh-topbar">
@@ -21,6 +23,23 @@ export function PdhHeader() {
             <small>Camisetas de fútbol</small>
           </span>
         </NavLink>
+
+        <div className="pdh-header-search">
+          <input
+            type="search"
+            placeholder="Buscar camiseta..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            aria-label="Buscar camiseta"
+          />
+          <span className="pdh-header-search-divider" aria-hidden="true" />
+          <span className="pdh-header-search-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none">
+              <circle cx="8.5" cy="8.5" r="6" stroke="#0f172a" strokeWidth="1.6" />
+              <line x1="13.2" y1="13.2" x2="18" y2="18" stroke="#0f172a" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
+          </span>
+        </div>
 
         <nav className="pdh-topnav">
           {NAV_LINKS.map((link) => (

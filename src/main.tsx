@@ -4,7 +4,9 @@ import { BrowserRouter, HashRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { App } from "./app/App";
+import { CartDrawer } from "./features/camisetas/CartDrawer";
 import { CartProvider } from "./features/camisetas/CartContext";
+import { SearchProvider } from "./features/camisetas/SearchContext";
 import { AppUpdateNotice } from "./shared/components/AppUpdateNotice";
 import "./styles/global.css";
 
@@ -19,10 +21,13 @@ if (import.meta.env.PROD && "serviceWorker" in navigator) {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Router>
-      <CartProvider>
-        <App />
-        <AppUpdateNotice />
-      </CartProvider>
+      <SearchProvider>
+        <CartProvider>
+          <App />
+          <AppUpdateNotice />
+          <CartDrawer />
+        </CartProvider>
+      </SearchProvider>
       <ToastContainer
         position="bottom-right"
         autoClose={3200}

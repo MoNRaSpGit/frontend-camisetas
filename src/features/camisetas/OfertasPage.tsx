@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useCart } from "./CartContext";
 import { getProducts } from "./camisetas.api";
 import type { CamisetaProduct } from "./camisetas.types";
@@ -40,7 +39,6 @@ export function OfertasPage() {
 
   function handleAddToCart(product: CamisetaProduct) {
     addItem(product);
-    toast.success(`${product.name} agregada al carrito.`);
   }
 
   return (
