@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { useSearch } from "./SearchContext";
+import { CartIcon } from "./icons";
 
 const NAV_LINKS = [
   { to: "/", label: "Catálogo", end: true },
@@ -54,7 +55,7 @@ export function PdhHeader() {
           ))}
 
           <NavLink to="/carrito" className="pdh-cart-link" aria-label="Ver carrito">
-            🛒
+            <CartIcon size={19} />
             {totalCount > 0 ? <span className="pdh-cart-badge">{totalCount}</span> : null}
           </NavLink>
         </nav>

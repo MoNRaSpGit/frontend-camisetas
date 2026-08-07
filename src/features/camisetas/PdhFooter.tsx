@@ -1,3 +1,5 @@
+import { InstagramIcon, WhatsAppIcon } from "./icons";
+
 // Datos de contacto inventados (placeholder): reemplazar por los reales del
 // cliente cuando los tenga. Estructura y links quedan listos.
 const WHATSAPP_NUMBER = "59899123456";
@@ -31,10 +33,10 @@ export function PdhFooter() {
             target="_blank"
             rel="noreferrer"
           >
-            💬 WhatsApp
+            <WhatsAppIcon size={16} /> WhatsApp
           </a>
           <a className="pdh-footer-link" href={`https://instagram.com/${INSTAGRAM_HANDLE}`} target="_blank" rel="noreferrer">
-            📷 @{INSTAGRAM_HANDLE}
+            <InstagramIcon size={16} /> @{INSTAGRAM_HANDLE}
           </a>
         </div>
       </div>

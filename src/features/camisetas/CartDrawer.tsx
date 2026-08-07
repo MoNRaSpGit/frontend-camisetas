@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 
-const AUTO_CLOSE_MS = 4500;
+const AUTO_CLOSE_MS = 5000;
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -20,12 +20,15 @@ export function CartDrawer() {
   useEffect(() => {
     if (!isDrawerOpen) return;
 
+    // El cierre automatico arranca cuando se ABRE el panel y no se reinicia
+    // si se agrega otro producto mientras esta abierto: 5s es el maximo que
+    // queda visible, punto.
     timerRef.current = setTimeout(closeDrawer, AUTO_CLOSE_MS);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDrawerOpen, items]);
+  }, [isDrawerOpen]);
 
   const currency = items[0]?.currency || "UYU";
 
