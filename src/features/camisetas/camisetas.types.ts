@@ -13,6 +13,7 @@ export type CamisetaSaleMovement = {
   productId: string;
   productName: string;
   unitPrice: number;
+  quantity: number;
   currency: string;
   mpPaymentId: string;
   mpStatus: string;
