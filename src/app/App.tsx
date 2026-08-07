@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { CamisetasHomePage } from "../features/camisetas/CamisetasHomePage";
 import { CheckoutResultPage } from "../features/camisetas/CheckoutResultPage";
+import { PanelPage } from "../features/camisetas/PanelPage";
 
 function HealthPage() {
   return (
@@ -26,6 +27,7 @@ export function App() {
         path="/compra-fallida"
         element={<CheckoutResultPage title="Pago no completado" message="No se pudo procesar el pago. Podes intentar de nuevo cuando quieras." />}
       />
+      <Route path="/panel" element={<PanelPage />} />
       <Route path="/health" element={<HealthPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

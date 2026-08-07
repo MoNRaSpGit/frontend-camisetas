@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../../shared/config/api";
-import type { CamisetaProduct } from "./camisetas.types";
+import type { CamisetaPanelSummary, CamisetaProduct } from "./camisetas.types";
 
 type ProductsResponse = {
   items: CamisetaProduct[];
@@ -37,4 +37,9 @@ export async function createCheckoutPreference(productId: string): Promise<Check
     body: JSON.stringify({ productId })
   });
   return readJson<CheckoutResponse>(response);
+}
+
+export async function getPanelSummary(): Promise<CamisetaPanelSummary> {
+  const response = await fetch(`${API_BASE_URL}/camisetas/panel/summary`, { cache: "no-store" });
+  return readJson<CamisetaPanelSummary>(response);
 }
