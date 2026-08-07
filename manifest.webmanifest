@@ -1,7 +1,7 @@
 {
-  "name": "Camisetas",
-  "short_name": "Camisetas",
-  "description": "Catalogo y venta de camisetas",
+  "name": "Pieldehincha",
+  "short_name": "Pieldehincha",
+  "description": "Catalogo y venta de camisetas de futbol",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
