@@ -18,7 +18,7 @@ export function PdhHeader() {
     <header className="pdh-topbar">
       <div className="pdh-topbar-inner">
         <NavLink to="/" className="pdh-wordmark" aria-label="Pieldehincha, ir al catálogo">
-          <span className="pdh-wordmark-badge">PdH</span>
+          <span className="pdh-wordmark-badge" aria-hidden="true" />
           <span className="pdh-wordmark-text">
             Pieldehincha
             <small>Camisetas de fútbol</small>

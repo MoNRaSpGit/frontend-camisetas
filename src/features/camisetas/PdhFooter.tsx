@@ -12,7 +12,7 @@ export function PdhFooter() {
     <footer className="pdh-footer">
       <div className="pdh-footer-inner">
         <div className="pdh-footer-brand">
-          <span className="pdh-wordmark-badge pdh-wordmark-badge--footer">PdH</span>
+          <span className="pdh-wordmark-badge pdh-wordmark-badge--footer" aria-hidden="true" />
           <div>
             <p className="pdh-footer-title">Pieldehincha</p>
             <p className="pdh-footer-tagline">Camisetas de fútbol para hinchas de verdad.</p>
