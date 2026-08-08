@@ -141,7 +141,9 @@ textarea {
 .pdh-header-search {
   display: flex;
   align-items: center;
-  background: var(--pdh-surface);
+  /* Siempre blanco, con o sin fondo oscuro: si no, en los temas oscuros el
+     buscador se pierde contra la barra. */
+  background: #ffffff;
   border-radius: 999px;
   height: 38px;
   flex: 1;
@@ -158,17 +160,17 @@ textarea {
   background: transparent;
   padding: 0 0 0 16px;
   font-size: 13.5px;
-  color: var(--pdh-text);
+  color: #0f172a;
 }
 
 .pdh-header-search input::placeholder {
-  color: var(--pdh-text-faint);
+  color: #94a3b8;
 }
 
 .pdh-header-search-divider {
   width: 1px;
   height: 20px;
-  background: var(--pdh-border);
+  background: #e2e8f0;
   flex-shrink: 0;
 }
 
@@ -179,7 +181,7 @@ textarea {
   width: 38px;
   height: 38px;
   flex-shrink: 0;
-  color: var(--pdh-text);
+  color: #0f172a;
 }
 
 .pdh-topnav {
