@@ -127,8 +127,8 @@ textarea {
   width: var(--pdh-logo-w, 192px);
   height: var(--pdh-logo-h, 128px);
   max-width: 60vw;
-  object-fit: contain;
-  object-position: left center;
+  object-fit: cover;
+  object-position: center;
   display: block;
   border-radius: 8px;
   margin: -20px 0;
