@@ -12,7 +12,7 @@ export function PdhFooter() {
     <footer className="pdh-footer">
       <div className="pdh-footer-inner">
         <div className="pdh-footer-brand">
-          <img src={`${import.meta.env.BASE_URL}logo-cliente.jpeg`} alt="Piel de Hincha" className="pdh-logo-image pdh-logo-image--footer" />
+          <img src={`${import.meta.env.BASE_URL}logo-cliente.png`} alt="Piel de Hincha" className="pdh-logo-image pdh-logo-image--footer" />
           <div>
             <p className="pdh-footer-title">Piel de Hincha</p>
             <p className="pdh-footer-tagline">La pasión no se negocia.</p>

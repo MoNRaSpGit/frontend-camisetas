@@ -18,7 +18,7 @@ export function PdhHeader() {
     <header className="pdh-topbar">
       <div className="pdh-topbar-inner">
         <NavLink to="/" className="pdh-wordmark" aria-label="Piel de Hincha, ir al catálogo">
-          <img src={`${import.meta.env.BASE_URL}logo-cliente.jpeg`} alt="Piel de Hincha" className="pdh-logo-image" />
+          <img src={`${import.meta.env.BASE_URL}logo-cliente.png`} alt="Piel de Hincha" className="pdh-logo-image" />
         </NavLink>
 
         <div className="pdh-header-search">
