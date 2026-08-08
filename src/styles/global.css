@@ -124,21 +124,21 @@ textarea {
 }
 
 .pdh-logo-image {
-  height: 92px;
+  height: 128px;
   width: auto;
   display: block;
   border-radius: 8px;
-  margin: -10px 0;
+  margin: -20px 0;
 }
 
 .pdh-logo-image--footer {
-  height: 104px;
+  height: 144px;
 }
 
 @media (max-width: 560px) {
   .pdh-logo-image {
-    height: 56px;
-    margin: -4px 0;
+    height: 76px;
+    margin: -8px 0;
   }
 }
 
