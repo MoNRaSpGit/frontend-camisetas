@@ -7,6 +7,7 @@ import { App } from "./app/App";
 import { CartDrawer } from "./features/camisetas/CartDrawer";
 import { CartProvider } from "./features/camisetas/CartContext";
 import { SearchProvider } from "./features/camisetas/SearchContext";
+import { ThemeSwitcher } from "./features/camisetas/ThemeSwitcher";
 import { AppUpdateNotice } from "./shared/components/AppUpdateNotice";
 import "./styles/global.css";
 
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <CartDrawer />
         </CartProvider>
       </SearchProvider>
+      <ThemeSwitcher />
       <ToastContainer
         position="bottom-right"
         autoClose={3200}

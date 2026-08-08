@@ -17,12 +17,8 @@ export function PdhHeader() {
   return (
     <header className="pdh-topbar">
       <div className="pdh-topbar-inner">
-        <NavLink to="/" className="pdh-wordmark" aria-label="Ir al catálogo">
-          <span className="pdh-wordmark-badge" aria-hidden="true" />
-          <span className="pdh-wordmark-text">
-            Acá irá tu logo
-            <small>Camisetas de fútbol</small>
-          </span>
+        <NavLink to="/" className="pdh-wordmark" aria-label="Piel de Hincha, ir al catálogo">
+          <img src={`${import.meta.env.BASE_URL}logo-cliente.jpeg`} alt="Piel de Hincha" className="pdh-logo-image" />
         </NavLink>
 
         <div className="pdh-header-search">
@@ -36,8 +32,8 @@ export function PdhHeader() {
           <span className="pdh-header-search-divider" aria-hidden="true" />
           <span className="pdh-header-search-icon" aria-hidden="true">
             <svg viewBox="0 0 20 20" width="16" height="16" fill="none">
-              <circle cx="8.5" cy="8.5" r="6" stroke="#0f172a" strokeWidth="1.6" />
-              <line x1="13.2" y1="13.2" x2="18" y2="18" stroke="#0f172a" strokeWidth="1.6" strokeLinecap="round" />
+              <circle cx="8.5" cy="8.5" r="6" stroke="currentColor" strokeWidth="1.6" />
+              <line x1="13.2" y1="13.2" x2="18" y2="18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           </span>
         </div>

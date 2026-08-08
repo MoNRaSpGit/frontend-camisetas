@@ -1,3 +1,16 @@
+// Categorias oficiales definidas por el cliente.
+export const CAMISETA_CATEGORIES = [
+  "Uruguayos",
+  "Selección",
+  "Sudamérica",
+  "Europa",
+  "Shorts",
+  "Conjuntos largo",
+  "Conjuntos corto",
+  "Camperas rompevientos",
+  "Otros"
+] as const;
+
 export type CamisetaProduct = {
   id: string;
   name: string;
@@ -5,6 +18,7 @@ export type CamisetaProduct = {
   price: number;
   salePrice: number | null;
   currency: string;
+  category: string | null;
   imageUrl: string;
 };
 

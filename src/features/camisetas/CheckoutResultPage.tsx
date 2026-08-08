@@ -40,7 +40,7 @@ export function CheckoutResultPage({ status, title, message, clearsCart }: Check
           </span>
 
           <div>
-            <p className="pdh-kicker">Pieldehincha</p>
+            <p className="pdh-kicker">Piel de Hincha</p>
             <h1 className="pdh-result-title">{title}</h1>
           </div>
 

@@ -46,6 +46,7 @@ export function CamisetasHomePage() {
   const [products, setProducts] = useState<CamisetaProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     void loadProducts();
@@ -68,13 +69,20 @@ export function CamisetasHomePage() {
     addItem(product);
   }
 
+  const availableCategories = useMemo(() => {
+    const categories = new Set(products.map((product) => product.category).filter((c): c is string => !!c));
+    return Array.from(categories);
+  }, [products]);
+
   const filteredProducts = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
-    if (!term) return products;
-    return products.filter(
-      (product) => product.name.toLowerCase().includes(term) || product.description.toLowerCase().includes(term)
-    );
-  }, [products, searchTerm]);
+    return products.filter((product) => {
+      const matchesTerm =
+        !term || product.name.toLowerCase().includes(term) || product.description.toLowerCase().includes(term);
+      const matchesCategory = !selectedCategory || product.category === selectedCategory;
+      return matchesTerm && matchesCategory;
+    });
+  }, [products, searchTerm, selectedCategory]);
 
   return (
     <div className="pdh-page">
@@ -83,6 +91,28 @@ export function CamisetasHomePage() {
       <PdhCarousel slides={HERO_SLIDES} />
 
       <main className="pdh-shell">
+        {!isLoading && !loadError && availableCategories.length > 0 ? (
+          <div className="pdh-category-filter">
+            <button
+              type="button"
+              className={`pdh-category-pill${selectedCategory === null ? " pdh-category-pill--active" : ""}`}
+              onClick={() => setSelectedCategory(null)}
+            >
+              Todas
+            </button>
+            {availableCategories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                className={`pdh-category-pill${selectedCategory === category ? " pdh-category-pill--active" : ""}`}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        ) : null}
+
         {isLoading ? <p className="pdh-empty-state">Cargando catalogo...</p> : null}
 
         {loadError ? (
@@ -95,7 +125,7 @@ export function CamisetasHomePage() {
         ) : null}
 
         {!isLoading && !loadError && filteredProducts.length === 0 ? (
-          <p className="pdh-empty-state">No encontramos camisetas que coincidan con "{searchTerm}".</p>
+          <p className="pdh-empty-state">No encontramos camisetas que coincidan con lo que buscás.</p>
         ) : null}
 
         {!isLoading && !loadError && filteredProducts.length > 0 ? (
@@ -112,6 +142,7 @@ export function CamisetasHomePage() {
                 </div>
 
                 <div className="pdh-card-body">
+                  {product.category ? <span className="pdh-card-category">{product.category}</span> : null}
                   <h2>{product.name}</h2>
                   <p className="pdh-card-description">{product.description}</p>
                   {product.salePrice !== null ? (

@@ -12,10 +12,10 @@ export function PdhFooter() {
     <footer className="pdh-footer">
       <div className="pdh-footer-inner">
         <div className="pdh-footer-brand">
-          <span className="pdh-wordmark-badge pdh-wordmark-badge--footer" aria-hidden="true" />
+          <img src={`${import.meta.env.BASE_URL}logo-cliente.jpeg`} alt="Piel de Hincha" className="pdh-logo-image pdh-logo-image--footer" />
           <div>
-            <p className="pdh-footer-title">Pieldehincha</p>
-            <p className="pdh-footer-tagline">Camisetas de fútbol para hinchas de verdad.</p>
+            <p className="pdh-footer-title">Piel de Hincha</p>
+            <p className="pdh-footer-tagline">La pasión no se negocia.</p>
           </div>
         </div>
 
@@ -42,7 +42,7 @@ export function PdhFooter() {
       </div>
 
       <div className="pdh-footer-bottom">
-        <p>© {new Date().getFullYear()} Pieldehincha. Todos los derechos reservados.</p>
+        <p>© {new Date().getFullYear()} Piel de Hincha. Todos los derechos reservados.</p>
       </div>
     </footer>
   );

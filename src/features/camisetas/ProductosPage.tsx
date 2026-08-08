@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getProducts, updateProduct, uploadProductImage } from "./camisetas.api";
 import { compressImageFile, ImageTooHeavyError } from "./image-compress";
-import type { CamisetaProduct } from "./camisetas.types";
+import { CAMISETA_CATEGORIES, type CamisetaProduct } from "./camisetas.types";
 import { PdhHeader } from "./PdhHeader";
 import { PdhFooter } from "./PdhFooter";
 
@@ -20,6 +20,7 @@ type EditableFields = {
   description: string;
   price: string;
   salePrice: string;
+  category: string;
 };
 
 function draftFromProduct(product: CamisetaProduct): EditableFields {
@@ -27,7 +28,8 @@ function draftFromProduct(product: CamisetaProduct): EditableFields {
     name: product.name,
     description: product.description,
     price: String(product.price),
-    salePrice: product.salePrice !== null ? String(product.salePrice) : ""
+    salePrice: product.salePrice !== null ? String(product.salePrice) : "",
+    category: product.category ?? ""
   };
 }
 
@@ -88,7 +90,8 @@ export function ProductosPage() {
         name: draft.name.trim(),
         description: draft.description.trim(),
         price,
-        salePrice
+        salePrice,
+        category: draft.category || undefined
       });
       setProducts((prev) => prev.map((product) => (product.id === productId ? updated : product)));
       setDrafts((prev) => ({ ...prev, [productId]: draftFromProduct(updated) }));
@@ -127,7 +130,7 @@ export function ProductosPage() {
       <main className="pdh-shell">
         <header className="pdh-header">
           <div>
-            <p className="pdh-kicker">Pieldehincha</p>
+            <p className="pdh-kicker">Piel de Hincha</p>
             <h1>Productos</h1>
           </div>
         </header>
@@ -196,6 +199,22 @@ export function ProductosPage() {
                         value={draft.salePrice}
                         onChange={(event) => updateDraft(product.id, "salePrice", event.target.value)}
                       />
+                    </label>
+
+                    <label className="pdh-field-label">
+                      Categoría
+                      <select
+                        className="pdh-text-input"
+                        value={draft.category}
+                        onChange={(event) => updateDraft(product.id, "category", event.target.value)}
+                      >
+                        <option value="">Sin categoría</option>
+                        {CAMISETA_CATEGORIES.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
                     </label>
 
                     <p className="pdh-empty-state">

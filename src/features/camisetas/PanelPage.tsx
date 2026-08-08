@@ -92,7 +92,7 @@ export function PanelPage() {
       <main className="pdh-shell">
         <header className="pdh-header">
           <div>
-            <p className="pdh-kicker">Pieldehincha</p>
+            <p className="pdh-kicker">Piel de Hincha</p>
             <h1>Panel de control</h1>
           </div>
         </header>

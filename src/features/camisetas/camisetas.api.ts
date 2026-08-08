@@ -51,7 +51,7 @@ export async function getPanelSummary(): Promise<CamisetaPanelSummary> {
 
 export async function updateProduct(
   productId: string,
-  dto: { name?: string; description?: string; price?: number; salePrice?: number | null }
+  dto: { name?: string; description?: string; price?: number; salePrice?: number | null; category?: string }
 ): Promise<CamisetaProduct> {
   const response = await fetch(`${API_BASE_URL}/camisetas/products/${productId}`, {
     method: "PATCH",

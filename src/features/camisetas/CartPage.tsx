@@ -44,7 +44,7 @@ export function CartPage() {
       <main className="pdh-shell">
         <header className="pdh-header pdh-header--simple">
           <div>
-            <p className="pdh-kicker">Pieldehincha</p>
+            <p className="pdh-kicker">Piel de Hincha</p>
             <h1>Tu carrito {items.length > 0 ? <span className="pdh-cart-page-count">({totalUnits})</span> : null}</h1>
           </div>
         </header>
