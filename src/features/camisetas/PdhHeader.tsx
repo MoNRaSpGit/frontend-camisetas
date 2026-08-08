@@ -66,6 +66,11 @@ export function PdhHeader() {
             </NavLink>
           ))}
 
+          <NavLink to="/carrito" className="pdh-cart-link" aria-label="Ver carrito">
+            <CartIcon size={19} />
+            {totalCount > 0 ? <span className="pdh-cart-badge">{totalCount}</span> : null}
+          </NavLink>
+
           <div className="pdh-user-menu">
             <button
               type="button"
@@ -90,11 +95,6 @@ export function PdhHeader() {
               </div>
             ) : null}
           </div>
-
-          <NavLink to="/carrito" className="pdh-cart-link" aria-label="Ver carrito">
-            <CartIcon size={19} />
-            {totalCount > 0 ? <span className="pdh-cart-badge">{totalCount}</span> : null}
-          </NavLink>
         </nav>
       </div>
     </header>
