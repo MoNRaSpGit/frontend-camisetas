@@ -8,6 +8,7 @@ import { CartDrawer } from "./features/camisetas/CartDrawer";
 import { CartProvider } from "./features/camisetas/CartContext";
 import { SearchProvider } from "./features/camisetas/SearchContext";
 import { ThemeSwitcher } from "./features/camisetas/ThemeSwitcher";
+import { LogoSizeTuner } from "./features/camisetas/LogoSizeTuner";
 import { AppUpdateNotice } from "./shared/components/AppUpdateNotice";
 import "./styles/global.css";
 
@@ -30,6 +31,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         </CartProvider>
       </SearchProvider>
       <ThemeSwitcher />
+      <LogoSizeTuner />
       <ToastContainer
         position="bottom-right"
         autoClose={3200}
