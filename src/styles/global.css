@@ -124,59 +124,18 @@ textarea {
 }
 
 .pdh-logo-image {
-  width: var(--pdh-logo-w, 192px);
-  height: var(--pdh-logo-h, 128px);
+  width: 170px;
+  height: 109px;
   max-width: 60vw;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
   border-radius: 8px;
-  margin: -20px 0;
 }
 
 .pdh-logo-image--footer {
-  width: calc(var(--pdh-logo-w, 192px) * 1.15);
-  height: calc(var(--pdh-logo-h, 128px) * 1.15);
-  margin: 0;
-}
-
-/* ---------- Ajustador de tamaño del logo (herramienta interna) ---------- */
-
-.pdh-logo-tuner {
-  position: fixed;
-  right: 18px;
-  bottom: 72px;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: var(--pdh-ink);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5);
-}
-
-.pdh-logo-tuner-label {
-  white-space: nowrap;
-}
-
-.pdh-logo-tuner label {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.pdh-logo-tuner input {
-  width: 56px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  padding: 3px 6px;
-  font-size: 12px;
+  width: 195px;
+  height: 125px;
 }
 
 .pdh-header-search {
