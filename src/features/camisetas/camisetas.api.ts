@@ -7,6 +7,7 @@ type ProductsResponse = {
 
 type CheckoutResponse = {
   initPoint: string;
+  orderCode: string;
 };
 
 async function readJson<T>(response: Response): Promise<T> {
@@ -35,11 +36,15 @@ export type CheckoutCartItem = {
   quantity: number;
 };
 
-export async function createCheckoutPreference(items: CheckoutCartItem[]): Promise<CheckoutResponse> {
+export async function createCheckoutPreference(
+  items: CheckoutCartItem[],
+  customerName: string,
+  customerPhone: string
+): Promise<CheckoutResponse> {
   const response = await fetch(`${API_BASE_URL}/camisetas/checkout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ items })
+    body: JSON.stringify({ items, customerName, customerPhone })
   });
   return readJson<CheckoutResponse>(response);
 }

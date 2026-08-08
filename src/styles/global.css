@@ -834,6 +834,11 @@ textarea {
   gap: 10px;
 }
 
+.pdh-order-detail-list__meta {
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--pdh-border);
+}
+
 .pdh-qty-badge {
   flex-shrink: 0;
   min-width: 32px;
@@ -1194,6 +1199,38 @@ textarea {
   line-height: 1.5;
 }
 
+.pdh-order-code {
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px dashed var(--pdh-accent);
+}
+
+.pdh-order-code span {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pdh-text-muted);
+}
+
+.pdh-order-code strong {
+  font-size: 1.5rem;
+  color: var(--pdh-accent-dark);
+  letter-spacing: 0.04em;
+}
+
+.pdh-order-code p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--pdh-text-muted);
+  text-align: center;
+}
+
 .pdh-result-actions {
   display: flex;
   gap: 10px;
@@ -1504,4 +1541,52 @@ textarea {
 
 .pdh-theme-switcher:hover {
   transform: translateY(-1px);
+}
+
+/* ---------- Modal de datos de contacto ---------- */
+
+.pdh-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 15, 25, 0.55);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pdh-modal {
+  width: min(420px, 100%);
+  background: var(--pdh-surface);
+  border-radius: 20px;
+  padding: 28px;
+  display: grid;
+  gap: 6px;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+}
+
+.pdh-modal h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--pdh-text);
+}
+
+.pdh-modal-text {
+  margin: 0 0 12px;
+  color: var(--pdh-text-muted);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.pdh-modal-form {
+  display: grid;
+  gap: 14px;
+}
+
+.pdh-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 4px;
 }

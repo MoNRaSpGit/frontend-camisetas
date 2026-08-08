@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { PdhHeader } from "./PdhHeader";
 import { PdhFooter } from "./PdhFooter";
@@ -22,6 +22,8 @@ const STATUS_ICON: Record<CheckoutResultStatus, typeof CheckCircleIcon> = {
 
 export function CheckoutResultPage({ status, title, message, clearsCart }: CheckoutResultPageProps) {
   const { clear } = useCart();
+  const [searchParams] = useSearchParams();
+  const orderCode = searchParams.get("codigo");
   const StatusIcon = STATUS_ICON[status];
 
   useEffect(() => {
@@ -45,6 +47,14 @@ export function CheckoutResultPage({ status, title, message, clearsCart }: Check
           </div>
 
           <p className="pdh-result-message">{message}</p>
+
+          {orderCode ? (
+            <div className="pdh-order-code">
+              <span>Tu código de pedido</span>
+              <strong>{orderCode}</strong>
+              <p>Guardalo, lo vas a necesitar si necesitás hacer un reclamo.</p>
+            </div>
+          ) : null}
 
           <div className="pdh-result-actions">
             <Link to="/" className="pdh-button pdh-button--primary">

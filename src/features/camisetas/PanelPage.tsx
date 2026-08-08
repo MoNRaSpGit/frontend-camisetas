@@ -26,6 +26,9 @@ type Order = {
   paymentId: string;
   createdAt: string;
   total: number;
+  orderCode: string | null;
+  customerName: string | null;
+  customerPhone: string | null;
   items: CamisetaSaleMovement[];
 };
 
@@ -50,6 +53,9 @@ function groupIntoOrders(movimientos: CamisetaSaleMovement[]): Order[] {
         paymentId: movement.mpPaymentId,
         createdAt: movement.createdAt,
         total: lineTotal,
+        orderCode: movement.orderCode,
+        customerName: movement.customerName,
+        customerPhone: movement.customerPhone,
         items: [movement]
       });
     }
@@ -156,9 +162,12 @@ export function PanelPage() {
                         onClick={() => setExpandedOrderId((current) => (current === order.paymentId ? null : order.paymentId))}
                       >
                         <div>
-                          <strong>{formatDate(order.createdAt)}</strong>
+                          <strong>{order.orderCode ?? formatDate(order.createdAt)}</strong>
                           <p className="pdh-order-item-meta">
-                            {order.items.length} {order.items.length === 1 ? "camiseta" : "camisetas"} · Pago {order.paymentId}
+                            {order.customerName ?? "Sin nombre"} · {order.customerPhone ?? "Sin celular"}
+                          </p>
+                          <p className="pdh-order-item-meta">
+                            {order.items.length} {order.items.length === 1 ? "camiseta" : "camisetas"} · {formatDate(order.createdAt)}
                           </p>
                         </div>
                         <strong className="pdh-amount-plus">+{formatPrice(order.total, order.items[0].currency)}</strong>
@@ -166,6 +175,9 @@ export function PanelPage() {
 
                       {expandedOrderId === order.paymentId ? (
                         <ul className="pdh-order-detail-list">
+                          <li className="pdh-order-detail-list__meta">
+                            <span className="pdh-order-item-meta">Pago Mercado Pago: {order.paymentId}</span>
+                          </li>
                           {order.items.map((item) => (
                             <li key={item.id}>
                               <span className="pdh-qty-badge">{item.quantity}</span>

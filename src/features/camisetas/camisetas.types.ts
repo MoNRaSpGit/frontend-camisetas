@@ -32,6 +32,9 @@ export type CamisetaSaleMovement = {
   mpPaymentId: string;
   mpStatus: string;
   createdAt: string;
+  orderCode: string | null;
+  customerName: string | null;
+  customerPhone: string | null;
 };
 
 export type CamisetaBestSeller = {

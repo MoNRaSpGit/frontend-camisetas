@@ -6,6 +6,7 @@ import { createCheckoutPreference } from "./camisetas.api";
 import { PdhHeader } from "./PdhHeader";
 import { PdhFooter } from "./PdhFooter";
 import { CartIcon, RemoveIcon } from "./icons";
+import { ContactModal } from "./ContactModal";
 
 function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
@@ -19,21 +20,24 @@ function resolveImageUrl(imageUrl: string) {
 export function CartPage() {
   const { items, totalPrice, removeItem, setQuantity } = useCart();
   const [isPaying, setIsPaying] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
 
   const currency = items[0]?.currency || "UYU";
   const totalUnits = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  async function handlePay() {
-    if (items.length === 0) return;
+  async function handleConfirmContact(name: string, phone: string) {
     setIsPaying(true);
     try {
       const { initPoint } = await createCheckoutPreference(
-        items.map((item) => ({ productId: item.productId, quantity: item.quantity }))
+        items.map((item) => ({ productId: item.productId, quantity: item.quantity })),
+        name,
+        phone
       );
       window.location.href = initPoint;
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "No se pudo iniciar el pago.");
       setIsPaying(false);
+      setShowContactModal(false);
     }
   }
 
@@ -114,7 +118,7 @@ export function CartPage() {
               <button
                 type="button"
                 className="pdh-button pdh-button--primary"
-                onClick={() => void handlePay()}
+                onClick={() => setShowContactModal(true)}
                 disabled={isPaying}
               >
                 {isPaying ? "Redirigiendo..." : "Pagar con Mercado Pago"}
@@ -129,6 +133,13 @@ export function CartPage() {
       </main>
 
       <PdhFooter />
+
+      <ContactModal
+        open={showContactModal}
+        isSubmitting={isPaying}
+        onCancel={() => setShowContactModal(false)}
+        onSubmit={(name, phone) => void handleConfirmContact(name, phone)}
+      />
     </div>
   );
 }
