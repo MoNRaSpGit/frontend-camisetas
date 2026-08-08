@@ -36,6 +36,12 @@ function formatPrice(amount: number, currency: string) {
   return amount.toLocaleString("es-UY", { style: "currency", currency, minimumFractionDigits: 0 });
 }
 
+function formatPhone(phone: string | null) {
+  if (!phone) return "Sin celular";
+  const match = /^0(\d)(\d{3})(\d{3})$/.exec(phone);
+  return match ? `0${match[1]} ${match[2]} ${match[3]}` : phone;
+}
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleString("es-UY", { dateStyle: "short", timeStyle: "short" });
 }
@@ -164,7 +170,7 @@ export function PanelPage() {
                         <div>
                           <strong>{order.orderCode ?? formatDate(order.createdAt)}</strong>
                           <p className="pdh-order-item-meta">
-                            {order.customerName ?? "Sin nombre"} · {order.customerPhone ?? "Sin celular"}
+                            {order.customerName ?? "Sin nombre"} · {formatPhone(order.customerPhone)}
                           </p>
                           <p className="pdh-order-item-meta">
                             {order.items.length} {order.items.length === 1 ? "camiseta" : "camisetas"} · {formatDate(order.createdAt)}

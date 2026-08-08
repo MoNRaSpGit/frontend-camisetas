@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { isValidUyMobile, normalizeUyPhone } from "./phone";
 
 type ContactModalProps = {
   open: boolean;
@@ -20,12 +21,12 @@ export function ContactModal({ open, isSubmitting, onCancel, onSubmit }: Contact
       setError("Ingresá tu nombre completo.");
       return;
     }
-    if (phone.trim().length < 6) {
-      setError("Ingresá un celular válido.");
+    if (!isValidUyMobile(phone)) {
+      setError("Ingresá un celular uruguayo válido (ej: 092 945 696).");
       return;
     }
     setError("");
-    onSubmit(name.trim(), phone.trim());
+    onSubmit(name.trim(), normalizeUyPhone(phone));
   }
 
   return (
