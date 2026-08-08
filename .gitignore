@@ -10,3 +10,7 @@ coverage
 # Carpetas de trabajo para subir imagenes reales antes de moverlas a public/
 ImgCamiseta
 assets-camisetas-reales
+
+# Documentacion interna (credenciales, decisiones de seguridad temporales,
+# bitacora). No se sube al repo del cliente.
+docs/

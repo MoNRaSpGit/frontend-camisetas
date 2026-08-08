@@ -5,6 +5,7 @@ import { CheckoutResultPage } from "../features/camisetas/CheckoutResultPage";
 import { OfertasPage } from "../features/camisetas/OfertasPage";
 import { PanelPage } from "../features/camisetas/PanelPage";
 import { ProductosPage } from "../features/camisetas/ProductosPage";
+import { RequireAdmin } from "../features/camisetas/RequireAdmin";
 
 function HealthPage() {
   return (
@@ -51,8 +52,22 @@ export function App() {
       />
       <Route path="/carrito" element={<CartPage />} />
       <Route path="/ofertas" element={<OfertasPage />} />
-      <Route path="/panel" element={<PanelPage />} />
-      <Route path="/productos" element={<ProductosPage />} />
+      <Route
+        path="/panel"
+        element={
+          <RequireAdmin>
+            <PanelPage />
+          </RequireAdmin>
+        }
+      />
+      <Route
+        path="/productos"
+        element={
+          <RequireAdmin>
+            <ProductosPage />
+          </RequireAdmin>
+        }
+      />
       <Route path="/health" element={<HealthPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

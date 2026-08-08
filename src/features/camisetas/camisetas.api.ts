@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "../../shared/config/api";
+import { ADMIN_TOKEN_STORAGE_KEY } from "./AuthContext";
 import type { CamisetaPanelSummary, CamisetaProduct } from "./camisetas.types";
 
 type ProductsResponse = {
@@ -9,6 +10,11 @@ type CheckoutResponse = {
   initPoint: string;
   orderCode: string;
 };
+
+function adminHeaders(): Record<string, string> {
+  const token = localStorage.getItem(ADMIN_TOKEN_STORAGE_KEY);
+  return token ? { "x-camisetas-admin-token": token } : {};
+}
 
 async function readJson<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -49,8 +55,20 @@ export async function createCheckoutPreference(
   return readJson<CheckoutResponse>(response);
 }
 
+export async function loginAdmin(username: string, password: string): Promise<{ token: string }> {
+  const response = await fetch(`${API_BASE_URL}/camisetas/admin/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+  return readJson<{ token: string }>(response);
+}
+
 export async function getPanelSummary(): Promise<CamisetaPanelSummary> {
-  const response = await fetch(`${API_BASE_URL}/camisetas/panel/summary`, { cache: "no-store" });
+  const response = await fetch(`${API_BASE_URL}/camisetas/panel/summary`, {
+    cache: "no-store",
+    headers: adminHeaders()
+  });
   return readJson<CamisetaPanelSummary>(response);
 }
 
@@ -60,7 +78,7 @@ export async function updateProduct(
 ): Promise<CamisetaProduct> {
   const response = await fetch(`${API_BASE_URL}/camisetas/products/${productId}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...adminHeaders() },
     body: JSON.stringify(dto)
   });
   return readJson<CamisetaProduct>(response);
@@ -69,7 +87,7 @@ export async function updateProduct(
 export async function uploadProductImage(productId: string, imageDataUri: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/camisetas/products/${productId}/image`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...adminHeaders() },
     body: JSON.stringify({ image: imageDataUri })
   });
   await readJson<{ ok: boolean }>(response);

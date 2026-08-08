@@ -4,8 +4,10 @@ import { BrowserRouter, HashRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { App } from "./app/App";
+import { AuthProvider } from "./features/camisetas/AuthContext";
 import { CartDrawer } from "./features/camisetas/CartDrawer";
 import { CartProvider } from "./features/camisetas/CartContext";
+import { LoginModal } from "./features/camisetas/LoginModal";
 import { SearchProvider } from "./features/camisetas/SearchContext";
 import { ThemeSwitcher } from "./features/camisetas/ThemeSwitcher";
 import { AppUpdateNotice } from "./shared/components/AppUpdateNotice";
@@ -22,13 +24,16 @@ if (import.meta.env.PROD && "serviceWorker" in navigator) {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Router>
-      <SearchProvider>
-        <CartProvider>
-          <App />
-          <AppUpdateNotice />
-          <CartDrawer />
-        </CartProvider>
-      </SearchProvider>
+      <AuthProvider>
+        <SearchProvider>
+          <CartProvider>
+            <App />
+            <AppUpdateNotice />
+            <CartDrawer />
+          </CartProvider>
+        </SearchProvider>
+        <LoginModal />
+      </AuthProvider>
       <ThemeSwitcher />
       <ToastContainer
         position="bottom-right"
